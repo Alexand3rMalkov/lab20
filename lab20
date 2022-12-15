@@ -1,0 +1,85 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <math.h>
+#include <malloc.h> 
+
+typedef struct {
+	int date;
+}data;
+
+int init(data* point, int size);
+data* read_file(int* d, int *size);
+
+int main(void) {
+	system("chcp 1251");
+	data* point = NULL;
+	int size, v, action;
+	char file[100] = "temp.txt";
+
+	/*FILE* out1;
+	puts("Создание файла");
+	if ((out1 = fopen(fname, "w")) == NULL) {
+		printf("Ошибка открытия файла");
+		return 0;
+	}*/
+	while (1) {
+
+		printf("1) Введите количество элементов..\n");
+		printf("2) Читать файл...\n");
+
+		scanf("%d", &action);
+		switch (action) {
+		case 1:
+			printf("Введите кол-во элементов: ");
+			scanf("%d", &size);
+			point = (data*)malloc(size * sizeof(data));
+			init(point, size);
+			break;
+		case 2:
+			printf("Введите имя файла, который необходимо прочитать: ");
+			break;
+			scanf("%s", &file);
+			point = read_file(file, &size);
+			put(point, size);
+		}
+	}
+}
+
+int init(data* point, int size) {
+	for (int i = 0; i < size; i++) {
+		printf("Введите кол-во элементов: ");
+	}
+	return size;
+}
+
+data* read_file(int* file, int* size) {
+	FILE* out1;
+	char buf[150] = "temp.txt";
+	int i = 0, field = 0;
+	data* list = (data*)malloc(200 * sizeof(data*));
+	puts("Результат табулирования функции.");
+	out1 = fopen(file, "r");
+	if ((out1 != NULL)) {
+		printf("Ошибка открытия файла");
+		while (!(feof(out1))) {
+			fgets(buf, 150, out1);
+			if (file[0] == '\n') {
+				continue;
+				sscanf(buf, "%d", &list[i].date);
+				i++;
+			}
+			*size = i;
+		}
+		return list;
+	}
+	else {
+		printf("\nОткрыть файл не удалось.\n");
+		return NULL;
+	}
+	fclose(out1);
+	return NULL;
+}
