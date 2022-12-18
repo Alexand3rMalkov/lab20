@@ -8,78 +8,113 @@
 #include <malloc.h> 
 
 typedef struct {
-	int date;
-}data;
+	int data;
+} user;
 
-int init(data* point, int size);
-data* read_file(int* d, int *size);
+int writefile(user* point, char* file);
+user* readfile(char* file, int* size);
 
 int main(void) {
 	system("chcp 1251");
-	data* point = NULL;
-	int size, v, action;
-	char file[100] = "temp.txt";
-
-	/*FILE* out1;
-	puts("Создание файла");
-	if ((out1 = fopen(fname, "w")) == NULL) {
+	/*char fname[20] = "number.txt";
+	FILE* out;
+	puts("Создание файла...");
+	if ((out = fopen(fname, "wt")) == NULL) {
 		printf("Ошибка открытия файла");
 		return 0;
-	}*/
+	}
+	fprintf(out, "%d\n", 5);
+	fopen(fname, "a");
+	fprintf(out, "%.2lf", 12.56);
+	fclose(out);
+	return 1;*/
+	user* point = NULL;
+	int action, size;
+	char file[50];
 	while (1) {
-
-		printf("1) Введите количество элементов..\n");
-		printf("2) Читать файл...\n");
-
+		printf("Выберите действие:\n");
+		printf("1) Запись в файл...\n");
+		printf("2) Чтение из файла...\n");
 		scanf("%d", &action);
 		switch (action) {
 		case 1:
-			printf("Введите кол-во элементов: ");
-			scanf("%d", &size);
-			point = (data*)malloc(size * sizeof(data));
-			init(point, size);
+			//point != NULL;
+			printf("Введите имя файла для записи: ");
+			scanf("%s", &file);
+			writefile(point, file);
 			break;
 		case 2:
 			printf("Введите имя файла, который необходимо прочитать: ");
-			break;
 			scanf("%s", &file);
-			point = read_file(file, &size);
+			point = readfile(file, &size);
+			printf("Считано %d\n", size);
 			put(point, size);
+			break;
 		}
 	}
-}
+	/*char temp[50] = "temp.txt";
+	FILE* ftemp;
+	puts("Создание файла с результатами табуляции...");
+	if ((ftemp = fopen(temp, "wt")) == NULL) {
+		printf("Ошибка открытия файла для записи");
 
-int init(data* point, int size) {
-	for (int i = 0; i < size; i++) {
-		printf("Введите кол-во элементов: ");
 	}
-	return size;
+	double r = 0;
+	printf("Введите кол-во элементов: ");
+	scanf("%lf", &r);
+	for (int i = 0; i < r; i++) {
+		fprintf(ftemp, "[%d] = %d\n",i, (rand() % 201) - 100);
+	}
+	double d = 0;
+	printf("Введите число, которое необходимо дозаписать: ");
+	scanf("%lf", &d);
+	fopen(temp, "a");
+	fprintf(ftemp, "%.2lf\n", d);
+	fclose(ftemp);
+	return 1;*/
 }
 
-data* read_file(int* file, int* size) {
-	FILE* out1;
-	char buf[150] = "temp.txt";
-	int i = 0, field = 0;
-	data* list = (data*)malloc(200 * sizeof(data*));
-	puts("Результат табулирования функции.");
-	out1 = fopen(file, "r");
-	if ((out1 != NULL)) {
-		printf("Ошибка открытия файла");
-		while (!(feof(out1))) {
-			fgets(buf, 150, out1);
-			if (file[0] == '\n') {
+
+int writefile(user* point, char* file) {
+	FILE* f;
+	puts("Создание файла с результатами табуляции...");
+	if ((f = fopen(file, "wt")) == NULL) {
+		fprintf(stderr, "Ошибка открытия файла для записи\n");
+		return -1;
+	}
+	double r = 0;
+	printf("Введите кол-во элементов: ");
+	scanf("%lf", &r);
+	for (int i = 0; i < r; i++) {
+		fprintf(f, "[%d] = %d\n", i, (rand() % 201) - 100);
+	}
+	fclose(f);
+	printf("\n Данные записаны в файл.\n");
+	return 1;
+}
+user* readfile(char* file, int* size) {
+	FILE* f; 
+	int number_field = 0;
+	int ind = 0;
+	user* list = (user*)malloc(100 * sizeof(user*));
+	char buffer[100];
+	f = fopen(file, "r");
+	if (f != NULL) {
+		printf("\nФайл открыт.\n");
+		while (!feof(f)) {
+			fgets(buffer, 100, f);
+			if (buffer[0] == '\n')
 				continue;
-				sscanf(buf, "%d", &list[i].date);
-				i++;
-			}
-			*size = i;
+			sscanf(buffer, "%d", &list[ind].data);
+			ind++;
 		}
+		*size = ind;
 		return list;
 	}
 	else {
 		printf("\nОткрыть файл не удалось.\n");
 		return NULL;
 	}
-	fclose(out1);
+	fclose(f);
 	return NULL;
 }
