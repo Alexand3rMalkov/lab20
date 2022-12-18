@@ -11,6 +11,7 @@ typedef struct {
 	int data;
 } user;
 
+void put(user* point, int size);
 int writefile(user* point, char* file);
 user* readfile(char* file, int* size);
 
@@ -74,6 +75,12 @@ int main(void) {
 	return 1;*/
 }
 
+void put(user* point, int size) {
+	for (int i = 0; i < size; i++) {
+		printf("\n\t%d", point[i].data);
+	}
+	printf("\t");
+}
 
 int writefile(user* point, char* file) {
 	FILE* f;
@@ -82,9 +89,9 @@ int writefile(user* point, char* file) {
 		fprintf(stderr, "Ошибка открытия файла для записи\n");
 		return -1;
 	}
-	double r = 0;
+	int r = 0;
 	printf("Введите кол-во элементов: ");
-	scanf("%lf", &r);
+	scanf("%d", &r);
 	for (int i = 0; i < r; i++) {
 		fprintf(f, "[%d] = %d\n", i, (rand() % 201) - 100);
 	}
@@ -92,6 +99,7 @@ int writefile(user* point, char* file) {
 	printf("\n Данные записаны в файл.\n");
 	return 1;
 }
+
 user* readfile(char* file, int* size) {
 	FILE* f; 
 	int number_field = 0;
