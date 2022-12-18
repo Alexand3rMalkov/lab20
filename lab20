@@ -14,6 +14,7 @@ typedef struct {
 void put(user* point, int size);
 int writefile(user* point, char* file);
 user* readfile(char* file, int* size);
+int sr(user* point, char* file, int size);
 
 int main(void) {
 	system("chcp 1251");
@@ -30,12 +31,14 @@ int main(void) {
 	fclose(out);
 	return 1;*/
 	user* point = NULL;
+	
 	int action, size;
 	char file[50];
 	while (1) {
 		printf("Выберите действие:\n");
 		printf("1) Запись в файл...\n");
 		printf("2) Чтение из файла...\n");
+		printf("3) Среднее арифметическое целых...\n");
 		scanf("%d", &action);
 		switch (action) {
 		case 1:
@@ -48,11 +51,19 @@ int main(void) {
 			printf("Введите имя файла, который необходимо прочитать: ");
 			scanf("%s", &file);
 			point = readfile(file, &size);
-			printf("Считано %d\n", size);
+			put(point, size);
+			printf("\n");
+			break;
+		case 3:
+			printf("Среднее арифметическое целых чисел. ");
+			//scanf("%s", &file);
+			point = sr(point, file, &size);
 			put(point, size);
 			break;
 		}
+		
 	}
+	
 	/*char temp[50] = "temp.txt";
 	FILE* ftemp;
 	puts("Создание файла с результатами табуляции...");
@@ -99,7 +110,7 @@ int writefile(user* point, char* file) {
 	return 1;
 }
 
-user* readfile(char* file) {
+user* readfile(char* file, int* size) {
 	FILE* f; 
 	char buf[100];
 	f = fopen(file, "r");
@@ -117,4 +128,16 @@ user* readfile(char* file) {
 	}
 	fclose(f);
 	return 0;
+}
+
+int sr(user* point, char* file, int size) {
+	int sum = 0, sredarif = 0;
+	for (int i = 1; i < size; i++) {
+		if (point[i].data > 0) {
+			sredarif += point[i].data;
+			sum += 1;
+		}
+		sredarif /= sum;
+		printf("Среднее арифметическое целых чисел = %d", sredarif);
+	}
 }
