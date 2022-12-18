@@ -77,15 +77,14 @@ int main(void) {
 
 void put(user* point, int size) {
 	for (int i = 0; i < size; i++) {
-		printf("\n\t%d", point[i].data);
+		printf("%d\n", point[i].data);
 	}
-	printf("\t");
 }
 
 int writefile(user* point, char* file) {
 	FILE* f;
 	puts("Создание файла с результатами табуляции...");
-	if ((f = fopen(file, "wt")) == NULL) {
+	if ((f = fopen(file, "w")) == NULL) {
 		fprintf(stderr, "Ошибка открытия файла для записи\n");
 		return -1;
 	}
@@ -96,33 +95,26 @@ int writefile(user* point, char* file) {
 		fprintf(f, "[%d] = %d\n", i, (rand() % 201) - 100);
 	}
 	fclose(f);
-	printf("\n Данные записаны в файл.\n");
+	printf("\nДанные записаны в файл.\n");
 	return 1;
 }
 
-user* readfile(char* file, int* size) {
+user* readfile(char* file) {
 	FILE* f; 
-	int number_field = 0;
-	int ind = 0;
-	user* list = (user*)malloc(100 * sizeof(user*));
-	char buffer[100];
+	char buf[100];
 	f = fopen(file, "r");
 	if (f != NULL) {
 		printf("\nФайл открыт.\n");
 		while (!feof(f)) {
-			fgets(buffer, 100, f);
-			if (buffer[0] == '\n')
-				continue;
-			sscanf(buffer, "%d", &list[ind].data);
-			ind++;
+			fgets(buf, 200, f);
+			puts(buf);
 		}
-		*size = ind;
-		return list;
+		return 1;
 	}
 	else {
 		printf("\nОткрыть файл не удалось.\n");
-		return NULL;
+		return -1;
 	}
 	fclose(f);
-	return NULL;
+	return 0;
 }
