@@ -14,7 +14,7 @@ typedef struct {
 void put(user* point, int size);
 int writefile(user* point, char* file);
 user* readfile(char* file, int* size);
-int sr(user* point, char* file, int size);
+double sr(user* point, int size);
 
 int main(void) {
 	system("chcp 1251");
@@ -31,9 +31,9 @@ int main(void) {
 	fclose(out);
 	return 1;*/
 	user* point = NULL;
-	
 	int action, size;
 	char file[50];
+	
 	while (1) {
 		printf("Выберите действие:\n");
 		printf("1) Запись в файл...\n");
@@ -55,13 +55,13 @@ int main(void) {
 			printf("\n");
 			break;
 		case 3:
-			printf("Среднее арифметическое целых чисел. ");
-			//scanf("%s", &file);
-			point = sr(point, file, &size);
-			put(point, size);
+			printf("Среднее арифметическое целых чисел %lf", sr(point, &size));
+			/*scanf("%s", &file);
+			point = sr(point, &size);
+			put(point, size);*/
 			break;
 		}
-		
+
 	}
 	
 	/*char temp[50] = "temp.txt";
@@ -130,14 +130,9 @@ user* readfile(char* file, int* size) {
 	return 0;
 }
 
-int sr(user* point, char* file, int size) {
-	int sum = 0, sredarif = 0;
-	for (int i = 1; i < size; i++) {
-		if (point[i].data > 0) {
-			sredarif += point[i].data;
-			sum += 1;
-		}
-		sredarif /= sum;
-		printf("Среднее арифметическое целых чисел = %d", sredarif);
-	}
+double sr(user* point, int size) {
+	double sum = 0;
+	for (int i = 0; i < size; i++)
+		sum += point[i].data;
+	return sum / size;
 }
